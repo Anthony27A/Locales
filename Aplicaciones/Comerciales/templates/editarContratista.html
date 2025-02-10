@@ -1,0 +1,82 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="col-md-6">
+        <form action="/procesarEdicionContratista/" id="frm_editar_contratista" method="post" class="p-4 border rounded bg-light">
+            <h3 class="text-center mb-4">Editar Contratista</h3>
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ contratista.id }}">
+
+            <div class="mb-3">
+                <label for="txt_nombre" class="form-label"><b>Nombre:</b></label>
+                <input type="text" class="form-control" name="txt_nombre" id="txt_nombre" value="{{ contratista.nombre }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_especialidad" class="form-label"><b>Especialidad:</b></label>
+                <input type="text" class="form-control" name="txt_especialidad" id="txt_especialidad" value="{{ contratista.especialidad }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_telefono" class="form-label"><b>Teléfono:</b></label>
+                <input type="text" class="form-control" name="txt_telefono" id="txt_telefono" value="{{ contratista.telefono }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_correo" class="form-label"><b>Correo Electrónico:</b></label>
+                <input type="email" class="form-control" name="txt_correo" id="txt_correo" value="{{ contratista.correo }}" required>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-warning">Editar</button>
+                <a href="/listadoContratista/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $("#frm_editar_contratista").validate({
+        rules: {
+            "txt_nombre": {
+                required: true,
+                minlength: 3
+            },
+            "txt_especialidad": {
+                required: true,
+                minlength: 3
+            },
+            "txt_telefono": {
+                required: true,
+                digits: true,
+                minlength: 7
+            },
+            "txt_correo": {
+                required: true,
+                email: true
+            }
+        },
+        messages: {
+            "txt_nombre": {
+                required: "Por favor ingrese el nombre del contratista",
+                minlength: "El nombre debe tener al menos 3 caracteres"
+            },
+            "txt_especialidad": {
+                required: "Por favor ingrese la especialidad",
+                minlength: "La especialidad debe tener al menos 3 caracteres"
+            },
+            "txt_telefono": {
+                required: "Por favor ingrese el número de teléfono",
+                digits: "Solo se permiten números",
+                minlength: "El teléfono debe tener al menos 7 dígitos"
+            },
+            "txt_correo": {
+                required: "Por favor ingrese el correo electrónico",
+                email: "Ingrese un correo válido"
+            }
+        }
+    });
+</script>
+
+{% endblock %}

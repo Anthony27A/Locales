@@ -1,0 +1,92 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="col-md-6">
+        <form action="/procesarEdicionLocal/" id="frm_editar_local" method="post" class="p-4 border rounded bg-light">
+            <h3 class="text-center mb-4">Editar Local</h3>
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ local.id }}">
+
+            <div class="mb-3">
+                <label for="txt_numero_local" class="form-label"><b>Número de Local:</b></label>
+                <input type="text" class="form-control" name="txt_numero_local" id="txt_numero_local" value="{{ local.numero_local }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="select_proyecto" class="form-label"><b>Proyecto:</b></label>
+                <select class="form-control" name="select_proyecto" id="select_proyecto" required>
+                    <option value="" disabled>Selecciona un Proyecto</option>
+                    {% for proyecto in proyectos %}
+                    <option value="{{ proyecto.id }}" {% if proyecto.id == local.proyecto.id %}selected{% endif %}>
+                        {{ proyecto.nombre }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_estado" class="form-label"><b>Estado:</b></label>
+                <input type="text" class="form-control" name="txt_estado" id="txt_estado" value="{{ local.estado }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="select_cliente" class="form-label"><b>Cliente:</b></label>
+                <select class="form-control" name="select_cliente" id="select_cliente">
+                    <option value="" disabled>Selecciona un Cliente</option>
+                    {% for cliente in clientes %}
+                    <option value="{{ cliente.id }}" {% if cliente.id == local.cliente.id %}selected{% endif %}>
+                        {{ cliente.nombre }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="select_contratista" class="form-label"><b>Contratista:</b></label>
+                <select class="form-control" name="select_contratista" id="select_contratista">
+                    <option value="" disabled>Selecciona un Contratista</option>
+                    {% for contratista in contratistas %}
+                    <option value="{{ contratista.id }}" {% if contratista.id == local.contratista.id %}selected{% endif %}>
+                        {{ contratista.nombre }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-warning">Editar</button>
+                <a href="/listadoLocales/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $("#frm_editar_local").validate({
+        rules: {
+            "txt_numero_local": {
+                required: true
+            },
+            "select_proyecto": {
+                required: true
+            },
+            "txt_estado": {
+                required: true
+            }
+        },
+        messages: {
+            "txt_numero_local": {
+                required: "Por favor ingrese el número del local"
+            },
+            "select_proyecto": {
+                required: "Por favor seleccione un proyecto"
+            },
+            "txt_estado": {
+                required: "Por favor ingrese el estado del local"
+            }
+        }
+    });
+</script>
+
+{% endblock %}

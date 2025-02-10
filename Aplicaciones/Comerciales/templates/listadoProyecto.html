@@ -1,0 +1,58 @@
+{% extends "./plantilla.html" %}
+{% block contenido %}
+<br><br>
+<h3 class="text-center mb-4">Listado de Proyectos de Construcción</h3>
+<table class="table table-bordered table-striped table-hover" id="tablaProyectos">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>DESCRIPCIÓN</th>
+            <th>FECHA INICIO</th>
+            <th>FECHA FIN</th>
+            <th>PRESUPUESTO</th>
+            <th>ACCIÓN</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for proyecto in proyectos %}
+            <tr>
+                <td>{{ proyecto.id }}</td>
+                <td>{{ proyecto.nombre }}</td>
+                <td>{{ proyecto.descripcion|truncatewords:10 }}</td>
+                <td>{{ proyecto.fecha_inicio }}</td>
+                <td>{{ proyecto.fecha_fin|default:"En progreso" }}</td>
+                <td>${{ proyecto.presupuesto }}</td>
+                <td>
+                    <a href="/editarProyecto/{{ proyecto.id }}" class="btn btn-primary btn-sm">Editar</a>
+                    <a onclick="return confirmDelete('{{ proyecto.id }}', 'proyecto');" href="#" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function() {
+        var table = $('#tablaProyectos').DataTable({
+            paging: true, // Habilitar paginación
+            ordering: true, // Habilitar ordenación
+            info: true, // Mostrar información de la tabla
+            lengthChange: false, // Desactivar el cambio de cantidad de registros por página
+            search: true, // Habilitar la búsqueda
+            dom: 'Bfrtip', // Definir la ubicación de los botones
+            buttons: [
+                'copyHtml5',   // Copiar al portapapeles
+                'excelHtml5',  // Exportar a Excel
+                'csvHtml5',    // Exportar a CSV
+                'pdfHtml5'     // Exportar a PDF
+            ]
+        });
+    });
+
+    function confirmDelete(id, tipo) {
+        return confirm('¿Está seguro de eliminar este ' + tipo + ' con ID ' + id + '?');
+    }
+</script>
+
+{% endblock %}

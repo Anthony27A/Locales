@@ -1,0 +1,87 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="col-md-6">
+        <form action="/procesarEdicionProyecto/" id="frm_editar_proyecto" method="post" class="p-4 border rounded bg-light">
+            <h3 class="text-center mb-4">Editar Proyecto de Construcción</h3>
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ proyecto.id }}">
+
+            <div class="mb-3">
+                <label for="txt_nombre" class="form-label"><b>Nombre:</b></label>
+                <input type="text" class="form-control" name="txt_nombre" id="txt_nombre" value="{{ proyecto.nombre }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_descripcion" class="form-label"><b>Descripción:</b></label>
+                <textarea class="form-control" name="txt_descripcion" id="txt_descripcion" rows="3" required>{{ proyecto.descripcion }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_fecha_inicio" class="form-label"><b>Fecha de Inicio:</b></label>
+                <input type="date" class="form-control" name="txt_fecha_inicio" id="txt_fecha_inicio" value="{{ proyecto.fecha_inicio|date:'Y-m-d' }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_fecha_fin" class="form-label"><b>Fecha de Finalización:</b></label>
+                <input type="date" class="form-control" name="txt_fecha_fin" id="txt_fecha_fin" value="{{ proyecto.fecha_fin|date:'Y-m-d' }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_presupuesto" class="form-label"><b>Presupuesto:</b></label>
+                <input type="number" class="form-control" name="txt_presupuesto" id="txt_presupuesto" value="{{ proyecto.presupuesto }}" required min="1">
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-warning">Editar</button>
+                <a href="/listadoProyecto/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $("#frm_editar_proyecto").validate({
+        rules: {
+            "txt_nombre": {
+                required: true,
+                minlength: 3
+            },
+            "txt_descripcion": {
+                required: true,
+                minlength: 10
+            },
+            "txt_fecha_inicio": {
+                required: true,
+                date: true
+            },
+            "txt_presupuesto": {
+                required: true,
+                number: true,
+                min: 1
+            }
+        },
+        messages: {
+            "txt_nombre": {
+                required: "Por favor ingrese el nombre del proyecto",
+                minlength: "El nombre debe tener al menos 3 caracteres"
+            },
+            "txt_descripcion": {
+                required: "Por favor ingrese una descripción",
+                minlength: "La descripción debe tener al menos 10 caracteres"
+            },
+            "txt_fecha_inicio": {
+                required: "Por favor seleccione la fecha de inicio",
+                date: "Ingrese una fecha válida"
+            },
+            "txt_presupuesto": {
+                required: "Por favor ingrese el presupuesto",
+                number: "Solo se permiten números",
+                min: "El presupuesto debe ser mayor a 0"
+            }
+        }
+    });
+</script>
+
+{% endblock %}

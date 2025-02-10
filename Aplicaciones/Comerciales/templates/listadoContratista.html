@@ -1,0 +1,57 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<br><br>
+<h3 class="text-center mb-4">Listado de Contratistas</h3>
+<table class="table table-bordered table-striped table-hover" id="tablaContratistas">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Especialidad</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contratista in contratistas %}
+            <tr>
+                <td>{{ contratista.id }}</td>
+                <td>{{ contratista.nombre }}</td>
+                <td>{{ contratista.especialidad }}</td>
+                <td>{{ contratista.telefono }}</td>
+                <td>{{ contratista.correo }}</td>
+                <td>
+                    <a href="/editarContratista/{{ contratista.id }}" class="btn btn-primary btn-sm">Editar</a>
+                    <a onclick="return confirmDelete('{{ contratista.id }}', 'contratista');" href="#" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function() {
+        var table = $('#tablaContratistas').DataTable({
+            paging: true, // Habilitar paginación
+            ordering: true, // Habilitar ordenación
+            info: true, // Mostrar información de la tabla
+            lengthChange: false, // Desactivar el cambio de cantidad de registros por página
+            search: true, // Habilitar la búsqueda
+            dom: 'Bfrtip', // Definir la ubicación de los botones
+            buttons: [
+                'copyHtml5',   // Copiar al portapapeles
+                'excelHtml5',  // Exportar a Excel
+                'csvHtml5',    // Exportar a CSV
+                'pdfHtml5'     // Exportar a PDF
+            ]
+        });
+    });
+
+    function confirmDelete(id, tipo) {
+        return confirm('¿Está seguro de eliminar este ' + tipo + ' con ID ' + id + '?');
+    }
+</script>
+
+{% endblock %}

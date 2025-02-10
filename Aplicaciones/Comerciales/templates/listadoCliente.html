@@ -1,0 +1,54 @@
+{% extends "./plantilla.html" %}
+{% block contenido %}
+<br><br>
+<h3 class="text-center mb-4">Listado de Clientes</h3>
+<table class="table table-bordered table-striped table-hover" id="tablaClientes">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>CORREO</th>
+            <th>TELÉFONO</th>
+            <th>ACCIÓN</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cliente in clientes %}
+            <tr>
+                <td>{{ cliente.id }}</td>
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.correo }}</td>
+                <td>{{ cliente.telefono }}</td>
+                <td>
+                    <a href="/editarCliente/{{ cliente.id }}" class="btn btn-primary btn-sm">Editar</a>
+                    <a onclick="return confirmDelete('{{ cliente.id }}', 'cliente');" href="#" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function() {
+        var table = $('#tablaClientes').DataTable({
+            paging: true, // Habilitar paginación
+            ordering: true, // Habilitar ordenación
+            info: true, // Mostrar información de la tabla
+            lengthChange: false, // Desactivar el cambio de cantidad de registros por página
+            search: true, // Habilitar la búsqueda
+            dom: 'Bfrtip', // Definir la ubicación de los botones
+            buttons: [
+                'copyHtml5',   // Copiar al portapapeles
+                'excelHtml5',  // Exportar a Excel
+                'csvHtml5',    // Exportar a CSV
+                'pdfHtml5'     // Exportar a PDF
+            ]
+        });
+    });
+
+    function confirmDelete(id, tipo) {
+        return confirm('¿Está seguro de eliminar este ' + tipo + ' con ID ' + id + '?');
+    }
+</script>
+
+{% endblock %}

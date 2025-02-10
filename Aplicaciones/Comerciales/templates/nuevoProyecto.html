@@ -1,0 +1,85 @@
+{% extends "./plantilla.html" %} 
+{% block contenido %}
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="col-md-6">
+        <form action="/guardarProyecto/" id="frm_nuevo_proyecto" method="post" class="p-4 border rounded bg-light">
+            <h3 class="text-center mb-4">Agregar Nuevo Proyecto</h3>
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="txt_nombre" class="form-label"><b>Nombre del Proyecto:</b></label>
+                <input type="text" class="form-control" name="txt_nombre" id="txt_nombre" placeholder="Ingrese el nombre del proyecto" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_descripcion" class="form-label"><b>Descripción:</b></label>
+                <textarea class="form-control" name="txt_descripcion" id="txt_descripcion" rows="3" placeholder="Ingrese una breve descripción" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_fecha_inicio" class="form-label"><b>Fecha de Inicio:</b></label>
+                <input type="date" class="form-control" name="txt_fecha_inicio" id="txt_fecha_inicio" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_fecha_fin" class="form-label"><b>Fecha de Fin (opcional):</b></label>
+                <input type="date" class="form-control" name="txt_fecha_fin" id="txt_fecha_fin">
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_presupuesto" class="form-label"><b>Presupuesto:</b></label>
+                <input type="number" step="0.01" class="form-control" name="txt_presupuesto" id="txt_presupuesto" placeholder="Ingrese el presupuesto" required>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a href="/listadoProyecto/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $("#frm_nuevo_proyecto").validate({
+        rules: {
+            "txt_nombre": {
+                required: true,
+                minlength: 3
+            },
+            "txt_descripcion": {
+                required: true,
+                minlength: 10
+            },
+            "txt_fecha_inicio": {
+                required: true,
+                date: true
+            },
+            "txt_presupuesto": {
+                required: true,
+                number: true,
+                min: 1
+            }
+        },
+        messages: {
+            "txt_nombre": {
+                required: "Por favor ingrese el nombre del proyecto",
+                minlength: "El nombre debe tener al menos 3 caracteres"
+            },
+            "txt_descripcion": {
+                required: "Por favor ingrese la descripción",
+                minlength: "La descripción debe tener al menos 10 caracteres"
+            },
+            "txt_fecha_inicio": {
+                required: "Por favor seleccione la fecha de inicio",
+                date: "Ingrese una fecha válida"
+            },
+            "txt_presupuesto": {
+                required: "Por favor ingrese el presupuesto",
+                number: "Ingrese un valor numérico",
+                min: "El presupuesto debe ser mayor a 0"
+            }
+        }
+    });
+</script>
+
+{% endblock %}
